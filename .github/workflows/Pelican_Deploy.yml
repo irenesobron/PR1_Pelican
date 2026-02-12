@@ -24,9 +24,9 @@ jobs:
           pip install pelican markdown
       - name: Build Pelican site
         run: |
-          pelican sitioweb_irsobron/content -o sitioweb_irsobron/output -s sitioweb_irsobron/pelicanconf.py
+          pelican content -o output -s pelicanconf.py
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./sitioweb_irsobron/output
+          publish_dir: ./output
