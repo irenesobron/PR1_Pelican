@@ -4,7 +4,15 @@ on:
   push:
     branches:
       - main
-
+jobs:
+  deploy:
+    uses: "seanh/ghp-pelican/.github/workflows/github_pages.yml@main"
+    permissions:
+      contents: "read"
+      pages: "write"
+      id-token: "write"
+    with:
+      settings: "publishconf.py"
 jobs:
   build-deploy:
     runs-on: ubuntu-latest 
@@ -26,9 +34,10 @@ jobs:
         run: |
           pelican sitioweb_irsobron/content -o sitioweb_irsobron/output -s sitioweb_irsobron/pelicanconf.py
       
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./sitioweb_irsobron/output
-
+      uses: "seanh/ghp-pelican/.github/workflows/github_pages.yml@main"
+      permissions:
+        contents: "read"
+        pages: "write"
+        id-token: "write"
+      with:
+        settings: "publishconf.py"
