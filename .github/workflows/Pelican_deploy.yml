@@ -24,10 +24,11 @@ jobs:
 
       - name: Build Pelican site
         run: |
-          pelican irene_web/content -o irene_web/output -s irene_web/pelicanconf.py
-
+          pelican sitioweb_irsobron/content -o sitioweb_irsobron/output -s sitioweb_irsobron/pelicanconf.py
+      
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./irene_web/output
+          publish_dir: ./sitioweb_irsobron/output
+
