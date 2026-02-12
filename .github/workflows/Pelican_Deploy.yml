@@ -1,71 +1,32 @@
-name: Deploy to GitHub Pages
+name: Deploy Pelican site
 
 on:
-  workflow_call:
-    inputs:
-      settings:
-        required: true
-        type: string
-      requirements:
-        required: false
-        default: "pelican markdown"
-        type: string
-      output-path:
-        required: false
-        default: "output/"
-        type: string
-      python:
-        required: false
-        default: "3.11"
-        type: string
-      deploy:
-        required: false
-        default: true
-        type: boolean
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+  push:
+    branches:
+      - main  #se ejecuta cuando haces push a main
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
+    
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: ${{ inputs.python }}
+          python-version: "3.11"
 
+   
       - name: Install dependencies
-        run: pip install ${{ inputs.requirements }}
-
+        run: |
+          pip install pelican markdown
       - name: Build Pelican site
         run: |
-          pelican --settings ${{ inputs.settings }} --output ${{ inputs.output-path }}
-
-      - name: Fix permissions
-        run: chmod -R +rX "${{ inputs.output-path }}"
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ${{ inputs.output-path }}
-
-  deploy:
-    if: ${{ inputs.deploy }}
-    needs: build
-    runs-on: ubuntu-latest
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
+          pelican sitioweb_irsobron/content -o sitioweb_irsobron/output -s sitioweb_irsobron/pelicanconf.py
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./sitioweb_irsobron/output
