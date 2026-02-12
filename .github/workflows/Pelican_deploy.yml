@@ -5,15 +5,6 @@ on:
     branches:
       - main
 jobs:
-  deploy:
-    uses: "seanh/ghp-pelican/.github/workflows/github_pages.yml@main"
-    permissions:
-      contents: "read"
-      pages: "write"
-      id-token: "write"
-    with:
-      settings: "publishconf.py"
-jobs:
   build-deploy:
     runs-on: ubuntu-latest 
 
@@ -33,11 +24,10 @@ jobs:
       - name: Build Pelican site
         run: |
           pelican sitioweb_irsobron/content -o sitioweb_irsobron/output -s sitioweb_irsobron/pelicanconf.py
-      
-      uses: "seanh/ghp-pelican/.github/workflows/github_pages.yml@main"
-      permissions:
-        contents: "read"
-        pages: "write"
-        id-token: "write"
-      with:
-        settings: "publishconf.py"
+        uses: "seanh/ghp-pelican/.github/workflows/github_pages.yml@main"
+        permissions:
+          contents: "read"
+          pages: "write"
+          id-token: "write"
+        with:
+          settings: "publishconf.py"
